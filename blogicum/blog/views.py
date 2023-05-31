@@ -11,20 +11,23 @@ from django.views.generic import (
     DeleteView,
 )
 
-from core.utils import post_all_query, post_published_query, get_post_data
-from core.mixins import CommentMixinView
-from .models import Post, User, Category, Comment
-from .forms import UserEditForm, PostEditForm, CommentEditForm
+from blog.utils import post_all_query, post_published_query, get_post_data
+from blog.mixins import CommentMixinView
+from blog.models import Post, User, Category, Comment
+from blog.forms import UserEditForm, PostEditForm, CommentEditForm
 
 
-class MainPostListView(ListView):
+POSTS_ON_PAGE = 10
+
+
+class IndexView(ListView):
     model = Post
     template_name = "blog/index.html"
     queryset = post_published_query()
-    paginate_by = 10
+    paginate_by = POSTS_ON_PAGE
 
 
-class CategoryPostListView(MainPostListView):
+class CategoryPostListView(IndexView):
     template_name = "blog/category.html"
     category = None
 
@@ -41,7 +44,7 @@ class CategoryPostListView(MainPostListView):
         return context
 
 
-class UserPostsListView(MainPostListView):
+class UserPostsListView(IndexView):
     template_name = "blog/profile.html"
     author = None
 
@@ -194,4 +197,4 @@ class CommentUpdateView(CommentMixinView, UpdateView):
 
 
 class CommentDeleteView(CommentMixinView, DeleteView):
-    ...
+    pass

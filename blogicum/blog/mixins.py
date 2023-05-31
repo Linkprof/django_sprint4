@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import View
 
 from blog.models import Comment
-from core.utils import get_post_data
+from blog.utils import get_post_data
 
 
 class CommentMixinView(LoginRequiredMixin, View):
